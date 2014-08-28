@@ -1,7 +1,9 @@
 {
     "dependencies": {
         "express": "latest",
-        "jade":"latest"
+        "jade":"latest",
+        "mysql":"latest",
+        "body-parser": "latest"
     },
     "description": "Widening access to academic journals and encouraging collaboration in the scientific community",
     "main":"server.js",
