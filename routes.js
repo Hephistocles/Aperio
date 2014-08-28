@@ -34,40 +34,52 @@ app.get('/user/:id', function(req, res) {
 
 /* API ROUTES */
 
+function queryAPI(objectType, queryObj, callback) {
+	var connection = getMySQLConn();
+	objectType = connection.escapeId(objectType);
+
+	var condition = "";
+	var conjunction = " WHERE ";
+	for (var key in queryObj) {
+		if (queryObj.hasOwnProperty(key)) {
+			condition += conjunction + connection.escapeId(key) + "=" + connection.escape(queryObj[key]);
+			conjunction = " AND ";
+		}
+	}
+	console.log('SELECT * from ' + objectType + ' ' + condition + ' LIMIT 10');
+	connection.query(
+		'SELECT * from ' + objectType + ' ' + condition + ' LIMIT 10',
+		function(err, rows) {
+			if (err) {
+				callback(null);
+			}
+			callback(rows);
+		});
+}
+
 app.get(/\/api\/(documents|users|comments|responses)\/(\d+)/, function(req, res) {
 	var connection = getMySQLConn();
 	connection.query(
-		'SELECT * from ?? WHERE id=?',
-		[req.params[0], req.params[1]],
-		function(err, rows) {
-			if (err)
-				return console.log(err);
-			res.json(rows);
-		});
-});
-app.get('/api/papers/', function(req, res) {
-	var connection = getMySQLConn();
-	var condition = "";
-	var conjunction = "";
-	if (req.query.id || req.query.userid)
-		condition = "WHERE";
-	if (req.query.id) {
-		condition += " id=" + connection.escape(req.query.id);
-		conjunction = " AND ";
-	}
-	if (req.query.userid) {
-		condition += conjunction + " documents_user=" + connection.escape(req.query.userid);
-	}
-	connection.query(
-		'SELECT * from documents ' + condition + ' LIMIT 10',
+		'SELECT * from ?? WHERE id=?', [req.params[0], req.params[1]],
 		function(err, rows) {
 			if (err) {
-				res.send("Error: " + err);
-				return console.log(err);
+				console.log(err);
+				return null;
 			}
 			res.json(rows);
 		});
 });
+app.get(/\/api\/(documents|users|comments|responses)\//, function(req, res) {
+	queryAPI(req.params[0], req.query, function(data) {
+		if (data !== null) {
+			res.json(data);
+		} else {
+			res.send("Error. Sorry!");
+		}
+	});
+});
+
+
 
 // serve static files in the 'assets' folder directly from the root
 app.use('/', express.static(__dirname + '/assets'));
