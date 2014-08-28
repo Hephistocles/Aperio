@@ -1,0 +1,21 @@
+extends ./paper
+block navigation
+	if paper
+		p Summary | 
+			a(href="/paper/"+paper.id+"/discussion") Discussion
+
+block paper_content
+	if paper
+		.shadow
+			h1 Title: 
+				b #{paper.title}
+			p Link: 
+				a(href=paper.location) #{paper.location}
+			h4 Abstract
+			if paper.document_abstract
+				p #{paper.document_abstract}
+			else
+				p
+					em There is no abstract to display
+	else
+		p error

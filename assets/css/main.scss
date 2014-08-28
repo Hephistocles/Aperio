@@ -1,15 +1,16 @@
-
-
+$lightlight-grey: #f4f4f4;
+$light-grey: #e6e6e6;
+$blue: #8dbbff;
 
 body {
-	font-family: Arial;
+	font-family: Open Sans;
 	padding:0;
 	margin: 0;
+	background-color: $lightlight-grey;
 }
 
 nav {
-	background-color: #e6e6e6;
-	border-bottom: 1px solid grey;
+	background-color: $blue;
 }
 
 .response {
@@ -17,11 +18,11 @@ nav {
 	margin: auto;
 	width: 800px;
 
-	.votes {
+	.side {
 		position: relative;
 		height:0px;
 		width:32px;
-		left:-50px;
+		left:-52px;
 		text-align: center;
 	}
 
@@ -31,5 +32,31 @@ nav {
 
 	.comments {
 
+	}
+}
+
+
+.shadow {
+	border-bottom: 1px solid $light-grey;
+	border-radius: 4px;
+	width: 800px;
+	margin: auto;
+	background-color: #ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.editor {
+	min-height: 150px;
+	.side {
+		position: relative;
+		height:0px;
+		width:32px;
+		left:-52px;
+		text-align: center;
+		.icon {
+			float: left;
+		}
 	}
 }
