@@ -1,7 +1,7 @@
 module.exports = {
 	port: 80,
-	dbhost: "localhost",
+	dbhost: "172.16.17.193",
 	dbuser: "aperio",
-	dbpass: "alohomora",
+	dbpass: "",
 	db: "aperio"
 };
