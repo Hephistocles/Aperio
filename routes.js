@@ -21,15 +21,33 @@ app.get('/', function(req, res) {
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
-	res.render("paper-discussion.jade");
+	queryAPI("documents", {"id": req.params.id}, function (data) {
+		if (data === null) {
+			res.send("error");
+		} else {
+			res.render("paper-discussion.jade", {"data": data[0]});
+		}
+	});
 });
 
 app.get('/paper/:id', function(req, res) {
-	res.render("paper-summmary.jade");
+	queryAPI("documents", {"id": req.params.id}, function (data) {
+		if (data === null) {
+			res.send("error");
+		} else {
+			res.render("paper-summary.jade", {"data": data[0]});
+		}
+	});
 });
 
 app.get('/user/:id', function(req, res) {
-	res.render("user.jade");
+	queryAPI("users", {"id": req.params.id}, function (data) {
+		if (data === null) {
+			res.send("error");
+		} else {
+			res.render("user.jade", {"data": data[0]});
+		}
+	});
 });
 
 /* API ROUTES */
