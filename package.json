@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "express": "latest",
+        "jade":"latest"
+    },
+    "description": "Widening access to academic journals and encouraging collaboration in the scientific community",
+    "main":"server.js",
+    "name": "Aperio",
+    "version": "0.0.1"
+}
