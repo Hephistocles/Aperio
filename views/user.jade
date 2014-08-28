@@ -1,0 +1,7 @@
+extends ./layout.jade
+block content
+	if user
+		p Displaying person #{user.name} who is #{user.age} years old
+	else
+		p
+			em person not found
