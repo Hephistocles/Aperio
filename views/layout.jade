@@ -1,0 +1,27 @@
+doctype html
+html
+	head
+		block title
+			title Aperio
+
+		//- lib css
+		link(href="/libcss/bootstrap.min.css", rel="stylesheet", type="text/css")
+
+		//- css
+		link(href="/css/main.css", rel="stylesheet", type="text/css")
+		
+		//- lib js
+		script(src="/libjs/jquery.min.js")
+		script(src="/libjs/bootstrap.min.js")
+		script(type="text/javascript", src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+		
+		script(type="text/javascript").
+			$(document).ready(function(){
+				$(".showhide-btn").click(function(){ $(this).next().toggle(); });
+			});
+
+	body
+		nav
+			h3 Aperio
+		section
+			block content
