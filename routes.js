@@ -75,19 +75,20 @@ function queryAPI(objectType, queryObj, callback) {
 		});
 }
 
-app.get(/\/api\/(documents|users|comments|responses)\/(\d+)/, function(req, res) {
-	var connection = getMySQLConn();
-	connection.query(
-		'SELECT * from ?? WHERE id=?', [req.params[0], req.params[1]],
-		function(err, rows) {
-			if (err) {
-				console.log(err);
-				return null;
-			}
-			res.json(rows);
-		});
+app.get(/\/api\/(documents|users|comments|responses|response_types)\/(\d+)/, function(req, res) {
+
+	queryAPI(req.params[0], {id:req.params[1]}, function(data) {
+		if (data !== null) {
+			if (data.length > 0)
+				res.json(data[0]);
+			else 
+				res.json([]);
+		} else {
+			res.send("Error. Sorry!");
+		}
+	});
 });
-app.get(/\/api\/(documents|users|comments|responses)\//, function(req, res) {
+app.get(/\/api\/(documents|users|comments|responses|response_types)\//, function(req, res) {
 	queryAPI(req.params[0], req.query, function(data) {
 		if (data !== null) {
 			res.json(data);
@@ -96,8 +97,6 @@ app.get(/\/api\/(documents|users|comments|responses)\//, function(req, res) {
 		}
 	});
 });
-
-
 
 // serve static files in the 'assets' folder directly from the root
 app.use('/', express.static(__dirname + '/assets'));
