@@ -21,11 +21,11 @@ app.get('/paper/:id/discussion', function(req, res) {
 	res.render("paper-discussion.jade");
 });
 
-app.get('/paper/:id', function(req, res) {
-	res.render("paper.jade");
-});
 
 app.get('/paper', function(req, res) {
+	res.render("paper.jade");
+});
+app.get('/paper/:id', function(req, res) {
 	res.render("paper.jade");
 });
 
@@ -33,18 +33,20 @@ app.get('/user', function(req, res) {
 	res.render("user.jade", user);
 });
 
-app.get('/paper/:id/', function(req, res) {
+/* API ROUTES */
+
+app.get(/\/api\/(documents|users|comments|responses)\/(\d+)/, function(req, res) {
 	var connection = getMySQLConn();
 	connection.query(
-		'SELECT * from documents WHERE id=?',
-		[req.params.id],
+		'SELECT * from ?? WHERE id=?',
+		[req.params[0], req.params[1]],
 		function(err, rows) {
 			if (err)
 				return console.log(err);
 			res.json(rows);
 		});
 });
-app.get('/papers/', function(req, res) {
+app.get('/api/papers/', function(req, res) {
 	var connection = getMySQLConn();
 	var condition = "";
 	var conjunction = "";
