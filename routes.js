@@ -14,7 +14,23 @@ app.use(bodyParser.json());
 // serve an html page on the root url
 // we have registered a default views directory (/views) and renderer (ejs) so only "chat.html" is necessary
 app.get('/', function(req, res) {
-	res.render("home.jade");
+	res.render("index.jade");
+});
+
+app.get('/paper/:id/discussion', function(req, res) {
+	res.render("paper-discussion.jade");
+});
+
+app.get('/paper/:id', function(req, res) {
+	res.render("paper.jade");
+});
+
+app.get('/paper', function(req, res) {
+	res.render("paper.jade");
+});
+
+app.get('/user', function(req, res) {
+	res.render("user.jade", user);
 });
 
 app.get('/paper/:id/', function(req, res) {

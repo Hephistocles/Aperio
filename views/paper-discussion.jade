@@ -1,0 +1,32 @@
+extends ./layout.jade
+block content
+	.response
+		.votes
+			img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);")
+			img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);")
+		.response-header
+			h2 Chris Little
+			p
+				b Some observations
+		button(type="button" class="showhide-btn") Show
+		div(style="display:none;")
+			.response-content
+				p Here is my equation \(x^2 + 1 = 0\). The answer is clearly \[x=\pm i\]
+				p Pleasfsdflksjd flkjsdlkfj slkdjf lskjd flkjs dflkj sdlfkj sldkjf .
+			.comments
+				h3 Comments
+				.comment
+					span
+						b Thomas Le Feuvre 
+						| I don't think I agree 
+						span(style="color:grey;") - 17th Apr 14
+				.comment
+					span
+						b Thomas Le Feuvre 
+						| Oh wait, i do!
+						span(style="color:grey;") - 18th Apr 14
+				.comment
+					span
+						b Caroline Wood 
+						| haha
+						span(style="color:grey;") - 18th Apr 14
