@@ -13,6 +13,7 @@ h1,h2 { font-family: 'Roboto Slab'; margin-top: 0; }
 
 nav {
 	background-color: #fff;
+	z-index: 10;
 	height: 32px;
 	border-bottom: 1px solid $light-grey;
 	position: fixed;
@@ -23,6 +24,7 @@ nav {
 
 
 .response {
+
 
 	margin: auto;
 	width: 800px;
@@ -79,7 +81,6 @@ nav {
 }
 
 form input[type="submit"], button {
-	position:
   width: 60px;
   height: 32px;
   margin: 0;
@@ -98,3 +99,20 @@ form input[type="submit"]:hover, button:hover {
   background-color: #339933; }
 form input {
   font-family: inherit; }
+
+
+
+.pill
+{
+	background-color: #ccc;
+}
+
+.pill.active
+{
+	background-color:#4791FF;
+}
+
+.pill:hover
+{
+	background-color:#1975ff;
+}

@@ -1,14 +1,16 @@
 extends ./paper
 block navigation
-	if paper
-		p Summary | 
-			a(href="/paper/"+paper.id+"/discussion") Discussion
-
+	div(style="width:400px;margin:auto;margin-top:42px;")
+		button.pill(style="width:200px;border-radius:4px 0 0 4px;", class="active", onclick="window.location.replace('/paper/"+paper.id+"')") Summary
+		button.pill(style="width:200px;border-radius:0 4px 4px 0;", class="", onclick="window.location.replace('/paper/"+paper.id+"/discussion')") Discussion
 block paper_content
 	if paper
-		.shadow
+		.shadow(style="position:relative;margin-top:10px;")
+			img(src=user.picture_url, style="height:80px;width:auto;border-radius:50%;border:5px solid #FFF;position: absolute;top: -20px;right: -20px;")
 			h1 Title: 
-				b #{paper.title}
+				b #{paper.title} #{url}
+			h4 by 
+				em #{user.real_name}
 			p Link: 
 				a(href=paper.location) #{paper.location}
 			h4 Abstract

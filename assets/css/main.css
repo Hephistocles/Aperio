@@ -10,6 +10,7 @@ h1, h2 {
 
 nav {
   background-color: #fff;
+  z-index: 10;
   height: 32px;
   border-bottom: 1px solid #e6e6e6;
   position: fixed;
@@ -74,3 +75,12 @@ form input[type="submit"]:hover, button:hover {
 
 form input {
   font-family: inherit; }
+
+.pill {
+  background-color: #ccc; }
+
+.pill.active {
+  background-color: #4791FF; }
+
+.pill:hover {
+  background-color: #1975ff; }

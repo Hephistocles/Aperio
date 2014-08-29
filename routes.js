@@ -36,7 +36,7 @@ app.get('/', function(req, res) {
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " +
-		"content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
+		"documents.id AS document_id, content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
 		"FROM " +
 		"responses " +
 		"JOIN " +
@@ -61,7 +61,8 @@ app.get('/paper/:id/discussion', function(req, res) {
 					if (itemsToFind < 1) {
 						res.render("paper-discussion.jade", {
 							"paper": responses[0],
-							"responses": responses
+							"responses": responses,
+							"url_int": req.url.search(/discussion$/)
 						});
 					}
 				};
@@ -81,8 +82,18 @@ app.get('/paper/:id', function(req, res) {
 		if (data === null) {
 			res.send("error");
 		} else {
-			res.render("paper-summary.jade", {
-				"paper": data[0]
+			api.query("users", {"id": data[0].user_id}, function(data2){
+				if (data2 === null) {
+					res.send("error");
+				} else {
+					console.log("1 ======" + data[0]);
+					console.log("2 ======" + data2[0]);
+					res.render("paper-summary.jade", {
+						"paper": data[0],
+						"user": data2[0],
+						"url_int": req.url.search(/discussion$/)
+					});
+				}
 			});
 		}
 	});
