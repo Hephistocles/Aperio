@@ -53,7 +53,7 @@ block paper_content
 								each comment in response.comments
 									.comment
 										span
-											b #{comment["real_name"]} 
+											a(href="/user/"+comment.author_id, style="font-weight:bold;") #{comment["real_name"]} 
 											| !{comment["comment_text"]} 
 											span(style="color:grey;") - #{comment["niceTime"]}
 							else

@@ -2,15 +2,19 @@ doctype html
 html
 	head
 		title Aperio
+		link(href="/libcss/bootstrap.min.css", rel="stylesheet", type="text/css")
 		link(href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700,300', rel='stylesheet', type='text/css')
-		link(href="/css/main.css")
+		link(href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700', rel='stylesheet', type='text/css')
+		link(href="/css/main.css", type="text/css", rel="stylesheet")
 
-	body
-		h1 Aperio
+	body(style="background-color:#fff;text-align:center;width:100%;")
+		img(src="/img/logo.png", style="width:400px; height:auto;padding-right:30px;")
 		if logged_in
 			h2 Hello #{ user.real_name } 
-				a(href="/paper/1") View a random paper?
 		else
-			h2 Not logged in. 
-				a(href="/login") Login now?
-		p An open database for academic papers that encourages peer review.
+			p A peer-review focused online database for academic papers.
+			button(onclick="window.location.replace('/login')", style="font-size:0.9em;font-family:Open Sans;width:150px;margin-top:20px;") login
+		hr.mini
+		each doc in documents
+			p
+				a(href="/paper/"+doc.id) #{doc.title}

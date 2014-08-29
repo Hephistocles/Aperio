@@ -6,6 +6,7 @@ $(document).ready(function() {
         var boxToAnimate = button.next();
 
         boxToAnimate.html(boxToAnimate.data("full-html"));
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         var curHeight = boxToAnimate.height(),
             autoHeight = boxToAnimate.css('height', 'auto').height();
         boxToAnimate.height(curHeight).animate({

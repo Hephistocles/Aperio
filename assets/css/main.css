@@ -74,7 +74,7 @@ form input[type="submit"]:hover, button:hover {
   background-color: #339933; }
 
 form input {
-  font-family: inherit; }
+  font-family: 'Open Sans'; }
 
 .pill {
   background-color: #ccc; }
@@ -91,3 +91,8 @@ form input {
   color: #999;
   margin-top: 0;
   padding-top: 0; }
+
+hr.mini {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  width: 300px; }

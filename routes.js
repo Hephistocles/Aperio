@@ -18,27 +18,30 @@ app.use(bodyParser.urlencoded());
 /* APPLICATION ROUTES */
 
 app.get('/', function(req, res) {
-	if (req.isAuthenticated()) {
-		api.query("users", {
-			"id": req.session.passport.user.db_id
-		}, function(data) {
-			res.render("home.jade", {
-				logged_in: req.isAuthenticated(),
-				"user": data[0]
+	api.query("documents", {}, function(data){
+		if (req.isAuthenticated()) {
+			api.query("users", {
+				"id": req.session.passport.user.db_id
+			}, function(data2) {
+				res.render("home.jade", {
+					logged_in: req.isAuthenticated(),
+					"user": data2[0],
+					"documents": data
+				});
 			});
-		});
-	} else {
-		res.render("home.jade", {
-			logged_in: false
-		});
-	}
-
+		} else {
+			res.render("home.jade", {
+				logged_in: false,
+				"documents": data
+			});
+		}
+	});
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " +
 		// users.picture_url AS picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id FROM responses JOIN users ON user_id = users.id JOIN documents ON document_id = documents.id JOIN user_ratings ON users.id = user_ratings.user_id WHERE document_id = 1
-		"documents.id as document_id, content, responses.rating AS response_rating, time_stamp, users.real_name AS real_name," +
+		"documents.id as document_id, content, responses.rating AS response_rating, responses.time_stamp, users.real_name AS real_name," +
 		" users.picture_url AS picture_url, u.picture_url AS author_picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id " +
 		"FROM " +
 		"responses " +
