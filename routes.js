@@ -86,7 +86,9 @@ app.get('/paper/:id', function(req, res) {
 		if (data === null) {
 			res.send("error");
 		} else {
-			api.query("users", {"id": data[0].user_id}, function(data2){
+			api.query("users", {
+				"id": data[0].user_id
+			}, function(data2) {
 				if (data2 === null) {
 					res.send("error");
 				} else {
@@ -191,7 +193,11 @@ app.get('/logincallback', passport.authenticate('google', {
 	failureRedirect: '/login/failure'
 }));
 app.get("/login/success", function(req, res) {
-	res.redirect('/');
+	if (req.isUnauthenticated()) {
+		res.redirect('/');
+	} else {
+		res.redirect('/user/' + req.session.passport.user.db_id);
+	}
 });
 app.get("/login/failure", function(req, res) {
 	res.send("Failed to log in.");
