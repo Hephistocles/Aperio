@@ -25,6 +25,7 @@ module.exports.app = app;
 module.exports.express = express;
 module.exports.session = session;
 module.exports.api = api;
+module.exports.config = config;
 
 // set up all the passport.js stuff
 require("./auth");

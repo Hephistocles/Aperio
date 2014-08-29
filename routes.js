@@ -28,19 +28,29 @@ app.get('/paper/:id/discussion', function(req, res) {
 		api.query("responses", {
 			"document_id": req.params.id
 		}, function(data2) {
-			/*console.log(data2.length);
-			for (i=0; i<data2.length; i++) {
-				var thisResponse = data2[i];
+			console.log(data2.length);
 
-				api.query("comments", {"response_id": data2[i].id}, function(data3){
-					thisResponse.comments = data3;
-				});
+			var commentsToFind = data2.length;
+
+			function attachComments(response) {
+				return function(comments) {
+					response.comments = comments;
+					commentsToFind--;
+					if (commentsToFind < 1) {
+						res.render("paper-discussion.jade", {
+							"paper": data[0],
+							"responses": data2
+						});
+					}
+				};
 			}
-			*/
-			res.render("paper-discussion.jade", {
-				"paper": data[0],
-				"responses": data2
-			});
+
+			for (var i = 0; i < data2.length; i++) {
+				api.query("comments", {
+					"response_id": data2[i].id
+				}, attachComments(data2[i]));
+			}
+
 		});
 
 	});
@@ -135,7 +145,6 @@ app.get("/login/failure", function(req, res) {
 	res.send("Failed to log in.");
 });
 
-// Note: still doesn't seem to work...
 app.get('/logout', function(req, res) {
 	req.logout();
 	req.session.destroy(function() {
