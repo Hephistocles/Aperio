@@ -88,4 +88,6 @@ form input {
 .smallcaps {
   text-transform: uppercase;
   font-size: 0.8em;
-  color: #999; }
+  color: #999;
+  margin-top: 0;
+  padding-top: 0; }

@@ -10,7 +10,8 @@ block paper_content
 	if paper
 		.shadow(style="position:relative;margin-top:10px;")
 			h3.smallcaps author
-			p #{user.real_name}
+			p 
+				a(href="/user/"+user.id) #{user.real_name}
 			h3.smallcaps Link 
 			p
 				a(href=paper.location) #{paper.location}
