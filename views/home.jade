@@ -8,7 +8,9 @@ html
 	body
 		h1 Aperio
 		if logged_in
-			h2 Hello #{ user.real_name }
+			h2 Hello #{ user.real_name } 
+				a(href="/paper/1") View a random paper?
 		else
-			h2 Not logged in
+			h2 Not logged in. 
+				a(href="/login") Login now?
 		p An open database for academic papers that encourages peer review.
