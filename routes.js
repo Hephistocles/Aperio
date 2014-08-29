@@ -31,7 +31,7 @@ app.get('/', function(req, res) {
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " + 
-    "content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title " +
+    "content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
 	"FROM " +
 		"responses " + 
 	"JOIN " + 
@@ -63,7 +63,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 			}
 			for (var i = responses.length - 1; i >= 0; i--) {
 
-				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].id],
+				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].response_id],
 					attachComments(responses[i]));
 			}
 		});
