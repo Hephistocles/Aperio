@@ -53,7 +53,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 		"user_ratings ON users.id = user_ratings.user_id " +
 		"JOIN users AS u ON documents.user_id=u.id " +
 		"WHERE " +
-		"document_id = ?", [req.params.id], function(responses) {
+		"document_id = ? ORDER BY response_rating DESC, user_rating DESC, time_stamp ASC", [req.params.id], function(responses) {
 
 			var itemsToFind = responses.length;
 
@@ -183,6 +183,21 @@ app.post('/api/responses/', function(req, res) {
 			res.redirect("/paper/" + req.body.document_id + "/discussion");
 		} else {
 			res.send("error");
+		}
+	});
+});
+
+app.post('/api/vote/', function(req, res) {
+	if (req.isUnauthenticated()) {
+		res.json({success:false, error:"not authenticated"});
+		return;
+	}
+
+	api.vote(req.body.response_id, req.session.passport.user.db_id, req.body.value, function(data) {
+		if (data !== null) {
+			res.json({success:true});
+		} else {
+			res.json({success:false});
 		}
 	});
 });
