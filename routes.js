@@ -16,9 +16,14 @@ app.use(bodyParser.json());
 /* APPLICATION ROUTES */
 
 app.get('/', function(req, res) {
-	res.render("home.jade", {
-		logged_in: req.isAuthenticated()
+	console.log("ROUTES 19", req.session.passport.user);
+	api.query("users", {"id": req.session.passport.user.db_id}, function(data){
+		res.render("home.jade", {
+			logged_in: req.isAuthenticated(),
+			"user": data[0]
+		});
 	});
+	
 });
 
 app.get('/paper/:id/discussion', function(req, res) {

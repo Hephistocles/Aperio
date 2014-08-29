@@ -28,12 +28,12 @@ passport.use(new google_strategy({
 			user_name: email
 		}, function(data) {
 			if (data.length > 0) {
-				// this is a user we've seen before
-				// will want to attach more data to "profile"
+				profile.db_id = data[0].id;
 				return done(null, profile);
 			} else {
-				// this is a new user, so need to insert!
-				// will want to attach more data to "profile"
+				api.post("users", {"user_name": profile.emails[0].value, "real_name": profile.displayName, "picture_url": profile._json.picture}, function(result){
+					profile.db_id = result.insertId;
+				});
 				return done(null, profile);
 			}
 		});
