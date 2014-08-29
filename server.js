@@ -30,6 +30,9 @@ module.exports.getMySQLConn = function() {
 // set the default directory for templated pages
 app.set("views", __dirname + "/views");
 
+var api = require("./api");
+module.exports.api = api;
+
 // I have put routing code in another file for tidiness. The .js suffix is implicit
 require("./routes");
 

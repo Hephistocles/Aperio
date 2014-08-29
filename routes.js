@@ -3,7 +3,7 @@
 var app = module.parent.exports.app;
 var express = module.parent.exports.express;
 var getMySQLConn = module.parent.exports.getMySQLConn;
-
+var api = module.parent.exports.api;
 var bodyParser = require('body-parser');
 
 // use body parser to interpret json
@@ -20,17 +20,17 @@ app.get('/', function(req, res) {
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
-	queryAPI("documents", {"id": req.params.id}, function (data) {
-		queryAPI("responses", {"document_id": req.params.id}, function(data2) {
-			console.log(data2.length);
-			for (var i=0; i<data2.length; i++) {
+	api.query("documents", {"id": req.params.id}, function (data) {
+		api.query("responses", {"document_id": req.params.id}, function(data2) {
+			/*console.log(data2.length);
+			for (i=0; i<data2.length; i++) {
 				var thisResponse = data2[i];
 
-				queryAPI("comments", {"response_id": data2[i].id}, function(data3){
+				api.query("comments", {"response_id": data2[i].id}, function(data3){
 					thisResponse.comments = data3;
 				});
-
 			}
+			*/
 			res.render("paper-discussion.jade", {"paper": data[0], "responses": data2});
 		});
 		
@@ -38,7 +38,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 });
 
 app.get('/paper/:id', function(req, res) {
-	queryAPI("documents", {"id": req.params.id}, function (data) {
+	api.query("documents", {"id": req.params.id}, function (data) {
 		if (data === null) {
 			res.send("error");
 		} else {
@@ -48,11 +48,11 @@ app.get('/paper/:id', function(req, res) {
 });
 
 app.get('/user/:id', function(req, res) {
-	queryAPI("users", {"id": req.params.id}, function (data) {
+	api.query("users", {"id": req.params.id}, function (data) {
 		if (data === null) {
 			res.send("error");
 		} else {
-			queryAPI("documents", {"user_id": req.params.id}, function(data2) {
+			api.query("documents", {"user_id": req.params.id}, function(data2) {
 				res.render("user.jade", {"user": data[0], "publications": data2});
 			});
 		}
@@ -61,39 +61,24 @@ app.get('/user/:id', function(req, res) {
 });
 
 app.get('/add', function(req, res) {
-	res.render("add.jade");
+	api.post("users", {"user_name": "tlef", "real_name": "Thomas Le Feuvre"}, function(result){
+		res.json(result);
+	});
 });
 
 /* API ROUTES */
 
-function queryAPI(objectType, queryObj, callback) {
-	var connection = getMySQLConn();
-	objectType = connection.escapeId(objectType);
 
-	var condition = "";
-	var conjunction = " WHERE ";
-	for (var key in queryObj) {
-		if (queryObj.hasOwnProperty(key)) {
-			condition += conjunction + connection.escapeId(key) + "=" + connection.escape(queryObj[key]);
-			conjunction = " AND ";
-		}
-	}
-	console.log('SELECT * from ' + objectType + ' ' + condition + ' LIMIT 10');
-	connection.query(
-		'SELECT * from ' + objectType + ' ' + condition + ' LIMIT 10',
-		function(err, rows) {
-			if (err) {
-				callback(null);
-			}
-			callback(rows);
-		});
-}
 
 app.get(/\/api\/(documents|users|comments|responses|response_types)\/(\d+)/, function(req, res) {
 
+<<<<<<< HEAD
 	queryAPI(req.params[0], {
 		id: req.params[1]
 	}, function(data) {
+=======
+	api.query(req.params[0], {id:req.params[1]}, function(data) {
+>>>>>>> dfba3fbb64977e534e902103a3acfc6eeef8c66f
 		if (data !== null) {
 			if (data.length > 0)
 				res.json(data[0]);
@@ -105,7 +90,7 @@ app.get(/\/api\/(documents|users|comments|responses|response_types)\/(\d+)/, fun
 	});
 });
 app.get(/\/api\/(documents|users|comments|responses|response_types)\//, function(req, res) {
-	queryAPI(req.params[0], req.query, function(data) {
+	api.query(req.params[0], req.query, function(data) {
 		if (data !== null) {
 			res.json(data);
 		} else {
