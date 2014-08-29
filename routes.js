@@ -41,7 +41,7 @@ app.get('/', function(req, res) {
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " +
 		// users.picture_url AS picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id FROM responses JOIN users ON user_id = users.id JOIN documents ON document_id = documents.id JOIN user_ratings ON users.id = user_ratings.user_id WHERE document_id = 1
-		"documents.id as document_id, content, responses.rating AS response_rating, responses.time_stamp, users.real_name AS real_name," +
+		"response_types.name AS response_type, documents.id as document_id, content, responses.response_type AS response_type_id, responses.rating AS response_rating, responses.time_stamp, users.real_name AS real_name," +
 		" users.picture_url AS picture_url, u.picture_url AS author_picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id " +
 		"FROM " +
 		"responses " +
@@ -52,8 +52,54 @@ app.get('/paper/:id/discussion', function(req, res) {
 		"JOIN " +
 		"user_ratings ON users.id = user_ratings.user_id " +
 		"JOIN users AS u ON documents.user_id=u.id " +
+		"JOIN response_types ON response_types.id=responses.response_type " +
 		"WHERE " +
 		"document_id = ? ORDER BY response_rating DESC, user_rating DESC, time_stamp ASC", [req.params.id], function(responses) {
+
+			var itemsToFind = responses.length;
+
+			function attachComments(response) {
+				return function(comments) {
+					response.comments = comments;
+					for (var i = response.comments.length - 1; i >= 0; i--) {
+						response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
+					}
+					itemsToFind--;
+					if (itemsToFind < 1) {
+						res.render("paper-discussion.jade", {
+							"paper": responses[0],
+							"responses": responses,
+							"logged_in": req.isAuthenticated(),
+							"url_int": req.url.search(/discussion$/)
+						});
+					}
+				};
+			}
+			for (var i = responses.length - 1; i >= 0; i--) {
+				responses[i].niceTime = moment(responses[i].time_stamp).format("MMMM Do YYYY");
+				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].response_id],
+					attachComments(responses[i]));
+			}
+		});
+});
+
+app.get('/paper/:id/discussion/:response_type', function(req, res) {
+	api.dosql("SELECT " +
+		// users.picture_url AS picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id FROM responses JOIN users ON user_id = users.id JOIN documents ON document_id = documents.id JOIN user_ratings ON users.id = user_ratings.user_id WHERE document_id = 1
+		"response_types.name AS response_type, documents.id as document_id, content, responses.response_type AS response_type_id, responses.rating AS response_rating, responses.time_stamp, users.real_name AS real_name," +
+		" users.picture_url AS picture_url, u.picture_url AS author_picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id " +
+		"FROM " +
+		"responses " +
+		"JOIN " +
+		"users ON user_id = users.id " +
+		"JOIN " +
+		"documents ON document_id = documents.id " +
+		"JOIN " +
+		"user_ratings ON users.id = user_ratings.user_id " +
+		"JOIN users AS u ON documents.user_id=u.id " +
+		"JOIN response_types ON response_types.id=responses.response_type " +
+		"WHERE " +
+		"document_id = ? AND response_type=? ORDER BY response_rating DESC, user_rating DESC, time_stamp ASC", [req.params.id, req.params.response_type], function(responses) {
 
 			var itemsToFind = responses.length;
 

@@ -46,7 +46,7 @@ function vote(response_id, value) {
         data: {response_id:response_id, value:value},
         success: function(result) {
             if (!result.success)
-                alert("Could not addd your vote");
+                alert("Could not add your vote");
         },
         dataType: "json"
     });
