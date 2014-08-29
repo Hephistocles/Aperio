@@ -1,11 +1,21 @@
 body {
-  font-family: Open Sans;
+  font-family: 'Open Sans';
   padding: 0;
   margin: 0;
   background-color: #f4f4f4; }
 
+h1, h2 {
+  font-family: 'Roboto Slab';
+  margin-top: 0; }
+
 nav {
-  background-color: #8dbbff; }
+  background-color: #fff;
+  z-index: 10;
+  height: 32px;
+  border-bottom: 1px solid #e6e6e6;
+  position: fixed;
+  top: 0;
+  width: 100%; }
 
 .response {
   margin: auto;
@@ -43,3 +53,34 @@ nav {
 
 #response-textarea {
   width: 100%; }
+
+form input[type="submit"], button {
+  width: 60px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #5cad5c;
+  border: none; }
+
+form input[type="submit"]:hover, button:hover {
+  background-color: #339933; }
+
+form input {
+  font-family: inherit; }
+
+.pill {
+  background-color: #ccc; }
+
+.pill.active {
+  background-color: #4791FF; }
+
+.pill:hover {
+  background-color: #1975ff; }
