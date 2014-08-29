@@ -146,7 +146,8 @@ app.get('/paper/:id', function(req, res) {
 					res.render("paper-summary.jade", {
 						"paper": data[0],
 						"user": data2[0],
-						"url_int": req.url.search(/discussion$/)
+						"url_int": req.url.search(/discussion$/),
+						"logged_in": req.isAuthenticated()
 					});
 				}
 			});
@@ -166,7 +167,8 @@ app.get('/user/:id', function(req, res) {
 			}, function(data2) {
 				res.render("user.jade", {
 					"user": data[0],
-					"publications": data2
+					"publications": data2,
+					"logged_in": req.isAuthenticated()
 				});
 			});
 		}
@@ -225,6 +227,24 @@ app.post('/api/responses/', function(req, res) {
 		user_id: req.session.passport.user.db_id,
 		response_type: req.body.response_type
 	}, function(data) {
+		if (data!==null){
+			res.redirect("/paper/" + req.body.document_id + "/discussion");
+		} else {
+			res.send("error");
+		}
+	});
+});
+
+app.post('/api/comments/', function(req, res) {
+	if (req.isUnauthenticated())
+		res.send("Not authenticated!");
+	var obj = {
+		response_id: req.body.response_id,
+		comment_text: req.body.comment_content,
+		author_id: req.session.passport.user.db_id
+	}
+	console.log(obj);
+	api.post('comments', obj, function(data) {
 		if (data!==null){
 			res.redirect("/paper/" + req.body.document_id + "/discussion");
 		} else {

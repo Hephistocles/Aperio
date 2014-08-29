@@ -4,6 +4,7 @@ html
 		block title
 			title Aperio
 
+
 		//- lib css
 		link(href="/libcss/bootstrap.min.css", rel="stylesheet", type="text/css")
 		link(href="/libcss/font-awesome.css", rel="stylesheet", type="text/css")
@@ -24,8 +25,14 @@ html
 		script(type="text/javascript" src="/js/main.js")
 
 	body
-		nav
+		nav(style="height:60px;")
 			div(style="width: 800px;margin:auto;")
-				a(href="/", style="font-weight:bold;font-size:1.4em;") Aperio
-		section(style="margin-top:10px;")
+				a(href="/", style="font-weight:bold;font-size:1.4em;")
+					img(src="/img/logo.png", style="width:100px; height:auto;padding-right:30px;position:relative;top:-5px;")
+				span(style="float:right;margin-top:20px;")
+					if logged_in
+						a(href="/logout") Logout
+					else
+						a(href="/login") Login
+		section(style="margin-top:70px;")
 			block content

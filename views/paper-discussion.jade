@@ -23,7 +23,7 @@ block paper_content
 					div(style="position:absolute;top:17px;right:122px;")
 						a(onclick="vote(" +  response.response_id + ", 1, this)", class="vote")
 							i(class="fa fa-thumbs-up fa-2x")
-				button(type="button" class="showhide-btn", style="position:absolute;top:10px;right:10px;height:42px;width:100px") Show More
+				button.pill(type="button" class="showhide-btn", style="background-color:#4791FF;position:absolute;top:10px;right:10px;width:100px") Show More
 				div(style="padding-left:80px;height:0; overflow:hidden;")
 					.response-content
 						p!= response.content
@@ -38,6 +38,29 @@ block paper_content
 											span(style="color:grey;") - #{comment["niceTime"]}
 							else
 								em There are no comments to display.
+						if logged_in
+							form(action="/api/comments/", method="post")
+								br
+								div(id="wysihtml5-toolbar", style="display: none;")&nbsp;
+									a(data-wysihtml5-command="bold") 
+										i(class="fa fa-bold fa-border") 
+									a(data-wysihtml5-command="italic") 
+										i(class="fa fa-italic fa-border")
+									a(data-wysihtml5-command="createLink") 
+										i(class="fa fa-link fa-border")
+									div(data-wysihtml5-dialog="createLink",style="display: none;")
+										label Link:
+											input(data-wysihtml5-dialog-field="href",value="http://",class="text")
+										a(data-wysihtml5-dialog-action="save") OK
+										a(data-wysihtml5-dialog-action="cancel") Cancel
+								textarea(name="comment_content" id="response-textarea", placeholder="Enter your text ...",autofocus,style="min-height:50px;width:400px;padding:10px;font-size:1.2em;border:2px solid #eeeeee;margin-top:-1px;outline:none;")
+								div(style="text-align:right")
+									input(type="hidden", name="response_id", value=response.response_id)
+									input(type="hidden", name="document_id", value=paper.document_id)
+									input(type="submit", value="Comment", style="width:100px; float:left;")
+							script.
+								var editor = new wysihtml5.Editor("response-textarea",{toolbar:"wysihtml5-toolbar",parserRules:wysihtml5ParserRules});
+
 	else
 		p there are no responses to display
 
