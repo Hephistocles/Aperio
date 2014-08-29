@@ -1,9 +1,12 @@
 {
     "dependencies": {
         "express": "latest",
+        "express-session": "latest",
         "jade":"latest",
         "mysql":"latest",
-        "body-parser": "latest"
+        "body-parser": "latest",
+        "passport": "latest",
+        "passport-google-oauth": "latest"
     },
     "description": "Widening access to academic journals and encouraging collaboration in the scientific community",
     "main":"server.js",

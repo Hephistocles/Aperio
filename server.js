@@ -1,7 +1,13 @@
 /*jshint unused:true, bitwise:true, eqeqeq:true, undef:true, latedef:true, eqnull:true */
-/* global __dirname, require, module, console */
+/* global __dirname, require, module */
+
 var express = require("express");
+var session = require("express-session");
 var app = express();
+app.use(session({
+	secret: 'chris is the best (no secret)'
+}));
+require("./auth");
 var config = require("./config");
 
 // prepare a function to connect to the mysql database for us
