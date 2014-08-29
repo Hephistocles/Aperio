@@ -17,30 +17,35 @@ app.use(bodyParser.json());
 /* APPLICATION ROUTES */
 
 app.get('/', function(req, res) {
-	console.log("ROUTES 19", req.session.passport.user);
-	api.query("users", {
-		"id": req.session.passport.user.db_id
-	}, function(data) {
-		res.render("home.jade", {
-			logged_in: req.isAuthenticated(),
-			"user": data[0]
+	if (req.isAuthenticated()) {
+		api.query("users", {
+			"id": req.session.passport.user.db_id
+		}, function(data) {
+			res.render("home.jade", {
+				logged_in: req.isAuthenticated(),
+				"user": data[0]
+			});
 		});
-	});
+	} else {
+		res.render("home.jade", {
+			logged_in: false
+		});
+	}
 
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
-	api.dosql("SELECT " + 
-    "content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title " +
-	"FROM " +
-		"responses " + 
-	"JOIN " + 
-		"users ON user_id = users.id " + 
-	"JOIN " + 
-		"documents ON document_id = documents.id " + 
-	"JOIN " + 
-		"user_ratings ON users.id = user_ratings.user_id " + 
-	"WHERE " + 
+	api.dosql("SELECT " +
+		"content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
+		"FROM " +
+		"responses " +
+		"JOIN " +
+		"users ON user_id = users.id " +
+		"JOIN " +
+		"documents ON document_id = documents.id " +
+		"JOIN " +
+		"user_ratings ON users.id = user_ratings.user_id " +
+		"WHERE " +
 		"document_id = ?", [req.params.id], function(responses) {
 
 			var itemsToFind = responses.length;
@@ -63,7 +68,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 			}
 			for (var i = responses.length - 1; i >= 0; i--) {
 
-				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].id],
+				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].response_id],
 					attachComments(responses[i]));
 			}
 		});
@@ -112,8 +117,8 @@ app.get('/add', function(req, res) {
 	});
 });
 
-app.get('/vote', function(req,res){
-	api.vote(1, 1, 1, function(result){
+app.get('/vote', function(req, res) {
+	api.vote(1, 1, 1, function(result) {
 		res.json(result);
 	});
 });

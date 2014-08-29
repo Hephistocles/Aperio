@@ -14,11 +14,12 @@ block paper_content
 
 	if responses
 		each response in responses
-			.response.shadow(style="position:relative;")
+			.response.shadow(style="position:relative;min-height:170px; margin-top:35px;")
 				.side
+					img(src=response.picture_url, style="height:150px;width:auto;border-radius:50%;border:5px solid #FFF;position: absolute;top: -35px;left: -35px;", class="icon-btn")
 					img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);", class="icon-btn")
 					img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);", class="icon-btn")
-				.response-header
+				.response-header(style="padding-left:80px")
 					h2 #{response["real_name"]}
 				button(type="button" class="showhide-btn", style="position:absolute;top:10px;right:10px;") Show
 				div(style="display:none;")
