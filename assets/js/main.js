@@ -27,8 +27,8 @@ $(document).ready(function() {
         boxToAnimate.animate({
             height: "20px"
         }, 'fast', function() {
-            boxToAnimate.text(boxToAnimate.text().substr(0,50) + "...");
-
+            var n = boxToAnimate.html().replace(/<\/?[^>]*>/g,"\n").trim().indexOf('\n');
+            boxToAnimate.text(boxToAnimate.text().substr(0,Math.min(50,n)) + ( n>47 ?"...":""));
         });
         button.off("click").click(function() {
             show(button);

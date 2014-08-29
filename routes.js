@@ -186,6 +186,23 @@ app.post('/api/responses/', function(req, res) {
 		}
 	});
 });
+/*
+app.post('/api/comments/', function(req, res) {
+	if (req.isUnauthenticated())
+		res.send("Not authenticated!");
+	api.post('comments', {
+		document_id: req.body.document_id,
+		content: req.body.response_content,
+		user_id: req.session.passport.user.db_id,
+		response_type: req.body.response_type
+	}, function(data) {
+		if (data!==null){
+			res.redirect("/paper/" + req.body.document_id + "/discussion");
+		} else {
+			res.send("error");
+		}
+	});
+});*/
 
 /* AUTH STUFF */
 var passport = require("passport");
