@@ -58,7 +58,6 @@ app.get('/paper/:id/discussion', function(req, res) {
 			var itemsToFind = responses.length;
 
 			function attachComments(response) {
-					console.log(response);
 				return function(comments) {
 					response.comments = comments;
 					for (var i = response.comments.length - 1; i >= 0; i--) {
@@ -76,7 +75,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 				};
 			}
 			for (var i = responses.length - 1; i >= 0; i--) {
-				responses[i].niceTime = moment(responses[i].time_stamp).format("MMMM Do YYYY");
+
 				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].response_id],
 					attachComments(responses[i]));
 			}
@@ -180,8 +179,11 @@ app.post('/api/responses/', function(req, res) {
 		user_id: req.session.passport.user.db_id,
 		response_type: req.body.response_type
 	}, function(data) {
-		if (data)
-			res.redirect("/paper/" + req.query.document_id + "/discussion#response" + data.insertId);
+		if (data!==null){
+			res.redirect("/paper/" + req.body.document_id + "/discussion");
+		} else {
+			res.send("error");
+		}
 	});
 });
 

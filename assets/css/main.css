@@ -96,3 +96,6 @@ hr.mini {
   border: 0;
   border-bottom: 1px solid #ccc;
   width: 300px; }
+
+#wysihtml5-toolbar a:hover {
+  text-decoration: none; }
