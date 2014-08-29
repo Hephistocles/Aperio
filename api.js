@@ -51,6 +51,29 @@ module.exports = {
 				callback(result);
 			}
 		});
+	},
+
+	vote : function(response_id, voter_id, val, callback) {
+		
+		// user id from user object
+		// user update to do: response.score += voter.rank/100
+
+		var api = this;
+		api.query("users", {"id": voter_id}, function(data){
+			api.query("responses", {"id": response_id}, function(data2){
+				var newScore = data2[0].rating + val*data[0].rank/100;
+				var connection = getMySQLConn();
+				var q = "UPDATE responses SET rating="+connection.escape(newScore)+" WHERE id="+connection.escape(response_id);
+				console.log(q);
+				connection.query(q, function(err, result){
+					if (err) {
+						callback(null);
+					} else {
+						callback(result);
+					}
+				});
+			});
+		});
 	}
 
 }

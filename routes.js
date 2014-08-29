@@ -44,7 +44,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 					if (commentsToFind < 1) {
 						res.render("paper-discussion.jade", {
 							"paper": data[0],
-							"responses": data2
+							"responses": data2.sort(function(a,b){return parseFloat(b.rating) - parseFloat(a.rating)})
 						});
 					}
 				};
@@ -100,6 +100,12 @@ app.get('/add', function(req, res) {
 		"user_name": "tlef",
 		"real_name": "Thomas Le Feuvre"
 	}, function(result) {
+		res.json(result);
+	});
+});
+
+app.get('/vote', function(req,res){
+	api.vote(1, 1, 1, function(result){
 		res.json(result);
 	});
 });
