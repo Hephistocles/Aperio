@@ -39,7 +39,8 @@ $(document).ready(function() {
     });
 });
 
-function vote(response_id, value) {
+function vote(response_id, value, button) {
+    $(button).parent().parent().find(".vote").css({opacity:0.5}).off("click").attr("onclick","");
     $.ajax({
         type: "POST",
         url: "/api/vote",

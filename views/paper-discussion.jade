@@ -15,13 +15,13 @@ block paper_content
 				.response-header(style="padding-left:80px")
 					span(style="font-size:0.9em;font-weight:300;text-transform:uppercase;color:#333") #{response.niceTime}
 					h2 #{response["real_name"]} 
-						small (<a href="/paper/#{paper.document_id}/discussion/#{response.response_type_id}">#{response["response_type"]}</a>)
+						small (<a href="/paper/#{paper.document_id}/discussion/#{response.response_type_id}#{response.response_type_id}">#{response["response_type"]}</a>)
 				if logged_in
 					div(style="position:absolute;top:17px;right:180px;")
-						a(onclick="vote(" +  response.response_id + ", -1)")
+						a(onclick="vote(" +  response.response_id + ", -1, this)", class="vote")
 							i(class="fa fa-thumbs-down fa-2x")
 					div(style="position:absolute;top:17px;right:122px;")
-						a(onclick="vote(" +  response.response_id + ", 1)")
+						a(onclick="vote(" +  response.response_id + ", 1, this)", class="vote")
 							i(class="fa fa-thumbs-up fa-2x")
 				button(type="button" class="showhide-btn", style="position:absolute;top:10px;right:10px;height:42px;width:100px") Show More
 				div(style="padding-left:80px;height:0; overflow:hidden;")
