@@ -19,18 +19,19 @@ block paper_content
 					img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);", class="icon-btn")
 					img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);", class="icon-btn")
 				.response-header
-					h2 user: #{response.user_id}
+					h2 #{response["real_name"]}
 				button(type="button" class="showhide-btn") Show
 				div(style="display:none;")
 					.response-content
 						p #{response.content}
 						.comments
 							h3 Comments
-							each comment in response.comments
-								.comment
-									span
-										b Thomas Le Feuvre 
-										| I don't think I agree 
-										span(style="color:grey;") - 17th Apr 14
+							if response.comments
+								each comment in response.comments
+									.comment
+										span
+											b #{comment["real_name"]} 
+											| #{comment["comment_text"]} 
+											span(style="color:grey;") - #{comment["niceTime"]}
 	else
 		p there are no responses to display

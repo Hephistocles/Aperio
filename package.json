@@ -6,7 +6,8 @@
         "mysql":"latest",
         "body-parser": "latest",
         "passport": "latest",
-        "passport-google-oauth": "latest"
+        "passport-google-oauth": "latest",
+        "moment":"latest"
     },
     "description": "Widening access to academic journals and encouraging collaboration in the scientific community",
     "main":"server.js",

@@ -5,6 +5,7 @@ var express = module.parent.exports.express;
 var getMySQLConn = module.parent.exports.getMySQLConn;
 var api = module.parent.exports.api;
 var bodyParser = require('body-parser');
+var moment = require('moment');
 
 // use body parser to interpret json
 app.use(bodyParser.json());
@@ -17,47 +18,91 @@ app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
 	console.log("ROUTES 19", req.session.passport.user);
-	api.query("users", {"id": req.session.passport.user.db_id}, function(data){
+	api.query("users", {
+		"id": req.session.passport.user.db_id
+	}, function(data) {
 		res.render("home.jade", {
 			logged_in: req.isAuthenticated(),
 			"user": data[0]
 		});
 	});
-	
+
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.query("documents", {
 		"id": req.params.id
-	}, function(data) {
+	}, function(documents) {
 		api.query("responses", {
 			"document_id": req.params.id
-		}, function(data2) {
-			console.log(data2.length);
+		}, function(responses) {
 
-			var commentsToFind = data2.length;
+			// we need to find user and commentlist for each response
+			var itemsToFind = responses.length * 2;
+
+			function tryToFinish() {
+				itemsToFind--;
+				if (itemsToFind < 1) {
+					res.render("paper-discussion.jade", {
+						"paper": documents[0],
+						"responses": responses
+					});
+				}
+			}
 
 			function attachComments(response) {
 				return function(comments) {
 					response.comments = comments;
-					commentsToFind--;
-					if (commentsToFind < 1) {
-						res.render("paper-discussion.jade", {
-							"paper": data[0],
-							"responses": data2
-						});
-					}
+					tryToFinish();
 				};
 			}
 
-			for (var i = 0; i < data2.length; i++) {
+			function attachUser(response) {
+				return function(user) {
+					response.user = user[0];
+					tryToFinish();
+				};
+			}
+
+			for (var i = 0; i < responses.length; i++) {
 				api.query("comments", {
-					"response_id": data2[i].id
-				}, attachComments(data2[i]));
+					"response_id": responses[i].id
+				}, attachComments(responses[i]));
+				api.query("users", {
+					"id": responses[i].user_id
+				}, attachUser(responses[i]));
 			}
 
 		});
 
+	});
+});
+app.get('/paper/:id/discussion2', function(req, res) {
+	api.dosql("SELECT * FROM responses JOIN users ON user_id=users.id JOIN documents ON document_id=documents.id WHERE document_id=?", [req.params.id], function(responses) {
+
+		var itemsToFind = responses.length;
+
+		function attachComments(response) {
+			return function(comments) {
+				response.comments = comments;
+				for (var i = response.comments.length - 1; i >= 0; i--) {
+					response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
+				}
+
+				itemsToFind--;
+				if (itemsToFind < 1) {
+					res.render("paper-discussion.jade", {
+						"paper": responses[0],
+						"responses": responses
+					});
+				}
+			};
+		}
+		for (var i = responses.length - 1; i >= 0; i--) {
+
+			api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].id],
+				attachComments(responses[i]));
+		}
 	});
 });
 
