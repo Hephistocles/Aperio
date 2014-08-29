@@ -16,8 +16,8 @@ block paper_content
 			p
 				a(href=paper.location) #{paper.location}
 			h3.smallcaps Abstract
-			if paper.document_abstract
-				p #{paper.document_abstract}
+			if paper.abstract
+				p #{paper.abstract}
 			else
 				p
 					em There is no abstract to display
