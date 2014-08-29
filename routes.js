@@ -22,16 +22,15 @@ app.get('/', function(req, res) {
 app.get('/paper/:id/discussion', function(req, res) {
 	queryAPI("documents", {"id": req.params.id}, function (data) {
 		queryAPI("responses", {"document_id": req.params.id}, function(data2) {
-			/*console.log(data2.length);
-			for (i=0; i<data2.length; i++) {
+			console.log(data2.length);
+			for (var i=0; i<data2.length; i++) {
 				var thisResponse = data2[i];
 
 				queryAPI("comments", {"response_id": data2[i].id}, function(data3){
 					thisResponse.comments = data3;
 				});
 
-				// data2[i].comments = comments;
-			}*/
+			}
 			res.render("paper-discussion.jade", {"paper": data[0], "responses": data2});
 		});
 		

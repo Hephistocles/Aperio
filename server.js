@@ -4,11 +4,15 @@
 var express = require("express");
 var session = require("express-session");
 var app = express();
-app.use(session({
-	secret: 'chris is the best (no secret)'
-}));
-require("./auth");
 var config = require("./config");
+
+// make the app and express variables visible from outside the module. 
+module.exports.app = app;
+module.exports.express = express;
+module.exports.session = session;
+
+// set up all the passport.js stuff
+require("./auth");
 
 // prepare a function to connect to the mysql database for us
 var mysql = require('mysql');
@@ -22,10 +26,6 @@ module.exports.getMySQLConn = function() {
 		connectTimeout: 100000
 	});
 };
-
-// make the app and express variables visible from outside the module. 
-module.exports.app = app;
-module.exports.express = express;
 
 // set the default directory for templated pages
 app.set("views", __dirname + "/views");

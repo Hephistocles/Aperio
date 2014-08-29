@@ -4,8 +4,12 @@
 
 var passport = require("passport");
 var app = module.parent.exports.app;
+var session = module.parent.exports.session;
 var api = module.parent.exports.api;
 
+app.use(session({
+	secret: 'chris is the best (no secret)'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 var passport = require("passport");
