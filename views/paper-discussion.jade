@@ -7,19 +7,17 @@ block navigation
 
 block paper_content
 
-	.shadow.editor
-		.side
-			img.icon(src="/img/save.png")
-			img.icon(src="/img/tick.png")
-			img.icon(src="/img/view.png")
-		p editor
+	form
+		.shadow
+			textarea(name="response_content" id="#response-textarea")
 
-	if responses.length>0
+
+	if responses
 		each response in responses
 			.response.shadow
 				.side
-					img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);")
-					img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);")
+					img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);", class="icon-btn")
+					img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);", class="icon-btn")
 				.response-header
 					h2 user: #{response.user_id}
 				button(type="button" class="showhide-btn") Show
@@ -27,21 +25,12 @@ block paper_content
 					.response-content
 						p #{response.content}
 						.comments
-							h3 Comments (not working yet)
-							.comment
-								span
-									b Thomas Le Feuvre 
-									| I don't think I agree 
-									span(style="color:grey;") - 17th Apr 14
-							.comment
-								span
-									b Thomas Le Feuvre 
-									| Oh wait, i do!
-									span(style="color:grey;") - 18th Apr 14
-							.comment
-								span
-									b Caroline Wood 
-									| haha
-									span(style="color:grey;") - 18th Apr 14
+							h3 Comments
+							//-each comment in response.comments
+								.comment
+									span
+										b Thomas Le Feuvre 
+										| I don't think I agree 
+										span(style="color:grey;") - 17th Apr 14
 	else
 		p there are no responses to display

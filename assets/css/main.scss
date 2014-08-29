@@ -60,3 +60,11 @@ nav {
 		}
 	}
 }
+
+.icon-btn:hover {
+	background: -webkit-gradient(radial, center center, 0, center center, 16, from(#888), to($lightlight-grey));
+}
+
+#response-textarea {
+	width: 100%;
+}

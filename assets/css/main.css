@@ -27,11 +27,19 @@ nav {
   margin-bottom: 10px;
   margin-top: 10px; }
 
-.editor .side {
-  position: relative;
-  height: 0px;
-  width: 32px;
-  left: -52px;
-  text-align: center; }
-  .editor .side .icon {
-    float: left; }
+.editor {
+  min-height: 150px; }
+  .editor .side {
+    position: relative;
+    height: 0px;
+    width: 32px;
+    left: -52px;
+    text-align: center; }
+    .editor .side .icon {
+      float: left; }
+
+.icon-btn:hover {
+  background: -webkit-gradient(radial, center center, 0, center center, 16, from(#888888), to(#f4f4f4)); }
+
+#response-textarea {
+  width: 100%; }
