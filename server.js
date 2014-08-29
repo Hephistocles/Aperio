@@ -6,14 +6,6 @@ var session = require("express-session");
 var app = express();
 var config = require("./config");
 
-// make the app and express variables visible from outside the module. 
-module.exports.app = app;
-module.exports.express = express;
-module.exports.session = session;
-
-// set up all the passport.js stuff
-require("./auth");
-
 // prepare a function to connect to the mysql database for us
 var mysql = require('mysql');
 module.exports.getMySQLConn = function() {
@@ -26,12 +18,21 @@ module.exports.getMySQLConn = function() {
 		connectTimeout: 100000
 	});
 };
+var api = require("./api");
+
+// make the app and express variables visible from outside the module. 
+module.exports.app = app;
+module.exports.express = express;
+module.exports.session = session;
+module.exports.api = api;
+
+// set up all the passport.js stuff
+require("./auth");
+
 
 // set the default directory for templated pages
 app.set("views", __dirname + "/views");
 
-var api = require("./api");
-module.exports.api = api;
 
 // I have put routing code in another file for tidiness. The .js suffix is implicit
 require("./routes");

@@ -1,7 +1,6 @@
 /*jshint unused:true, bitwise:true, eqeqeq:true, undef:true, latedef:true, eqnull:true */
 /* global require, module */
 
-
 var passport = require("passport");
 var app = module.parent.exports.app;
 var session = module.parent.exports.session;

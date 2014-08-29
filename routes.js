@@ -16,12 +16,18 @@ app.use(bodyParser.json());
 /* APPLICATION ROUTES */
 
 app.get('/', function(req, res) {
-	res.render("home.jade");
+	res.render("home.jade", {
+		logged_in: req.isAuthenticated()
+	});
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
-	api.query("documents", {"id": req.params.id}, function (data) {
-		api.query("responses", {"document_id": req.params.id}, function(data2) {
+	api.query("documents", {
+		"id": req.params.id
+	}, function(data) {
+		api.query("responses", {
+			"document_id": req.params.id
+		}, function(data2) {
 			/*console.log(data2.length);
 			for (i=0; i<data2.length; i++) {
 				var thisResponse = data2[i];
@@ -31,29 +37,43 @@ app.get('/paper/:id/discussion', function(req, res) {
 				});
 			}
 			*/
-			res.render("paper-discussion.jade", {"paper": data[0], "responses": data2});
+			res.render("paper-discussion.jade", {
+				"paper": data[0],
+				"responses": data2
+			});
 		});
-		
+
 	});
 });
 
 app.get('/paper/:id', function(req, res) {
-	api.query("documents", {"id": req.params.id}, function (data) {
+	api.query("documents", {
+		"id": req.params.id
+	}, function(data) {
 		if (data === null) {
 			res.send("error");
 		} else {
-			res.render("paper-summary.jade", {"paper": data[0]});
+			res.render("paper-summary.jade", {
+				"paper": data[0]
+			});
 		}
 	});
 });
 
 app.get('/user/:id', function(req, res) {
-	api.query("users", {"id": req.params.id}, function (data) {
+	api.query("users", {
+		"id": req.params.id
+	}, function(data) {
 		if (data === null) {
 			res.send("error");
 		} else {
-			api.query("documents", {"user_id": req.params.id}, function(data2) {
-				res.render("user.jade", {"user": data[0], "publications": data2});
+			api.query("documents", {
+				"user_id": req.params.id
+			}, function(data2) {
+				res.render("user.jade", {
+					"user": data[0],
+					"publications": data2
+				});
 			});
 		}
 	});
@@ -61,7 +81,10 @@ app.get('/user/:id', function(req, res) {
 });
 
 app.get('/add', function(req, res) {
-	api.post("users", {"user_name": "tlef", "real_name": "Thomas Le Feuvre"}, function(result){
+	api.post("users", {
+		"user_name": "tlef",
+		"real_name": "Thomas Le Feuvre"
+	}, function(result) {
 		res.json(result);
 	});
 });
@@ -71,14 +94,9 @@ app.get('/add', function(req, res) {
 
 
 app.get(/\/api\/(documents|users|comments|responses|response_types)\/(\d+)/, function(req, res) {
-
-<<<<<<< HEAD
-	queryAPI(req.params[0], {
+	api.query(req.params[0], {
 		id: req.params[1]
 	}, function(data) {
-=======
-	api.query(req.params[0], {id:req.params[1]}, function(data) {
->>>>>>> dfba3fbb64977e534e902103a3acfc6eeef8c66f
 		if (data !== null) {
 			if (data.length > 0)
 				res.json(data[0]);
@@ -124,7 +142,6 @@ app.get('/logout', function(req, res) {
 		res.redirect('/');
 	});
 });
-
 
 
 // serve static files in the 'assets' folder directly from the root
