@@ -57,12 +57,12 @@ app.get('/paper/:id/discussion', function(req, res) {
 					for (var i = response.comments.length - 1; i >= 0; i--) {
 						response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
 					}
-
 					itemsToFind--;
 					if (itemsToFind < 1) {
 						res.render("paper-discussion.jade", {
 							"paper": responses[0],
-							"responses": responses
+							"responses": responses,
+							"logged_in": req.isAuthenticated() 
 						});
 					}
 				};
@@ -152,7 +152,6 @@ app.get(/\/api\/(documents|users|comments|responses|response_types)\//, function
 	});
 });
 app.post('/api/responses/', function(req, res) {
-	debugger;
 	if (req.isUnauthenticated())
 		res.send("Not authenticated!");
 	api.post('responses', {
