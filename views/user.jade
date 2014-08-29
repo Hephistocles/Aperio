@@ -1,14 +1,19 @@
 extends ./layout
 block content
-	.shadow
-		h1 #{user.real_name} (#{user.user_name})
-		h3 Publications
-		each paper in publications
-			p #{paper.title} (
-				a(href=paper.location) View
-				| |
-				a(href="/paper/"+paper.id) Summary
-				| |
-				a(href="/paper/"+paper.id+"/discussion") Discussion
-				| )
-	
+	div(style="width:400px;margin:auto;margin-top:42px;text-align:center;")
+		img(src=user.picture_url, style="height:120px;width:auto;border-radius:50%;border:5px solid #FFF;")
+		h1(style="") #{user.real_name}
+	if publications.length>0
+		.shadow
+			h3.smallcaps Publications
+			each paper in publications
+				p #{paper.title} (
+					a(href=paper.location) View
+					| |
+					a(href="/paper/"+paper.id) Summary
+					| |
+					a(href="/paper/"+paper.id+"/discussion") Discussion
+					| )
+	else
+		div(style="width:400px;margin:auto;text-align:center;")
+			em There are no publications to display.

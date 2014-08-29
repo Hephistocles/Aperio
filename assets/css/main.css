@@ -84,3 +84,10 @@ form input {
 
 .pill:hover {
   background-color: #1975ff; }
+
+.smallcaps {
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #999;
+  margin-top: 0;
+  padding-top: 0; }
