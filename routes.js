@@ -9,6 +9,7 @@ var moment = require('moment');
 
 // use body parser to interpret json
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 
 // serve an html page on the root url
@@ -36,7 +37,7 @@ app.get('/', function(req, res) {
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " +
-		"content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
+		"documents.id as document_id, content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
 		"FROM " +
 		"responses " +
 		"JOIN " +
@@ -148,6 +149,20 @@ app.get(/\/api\/(documents|users|comments|responses|response_types)\//, function
 		} else {
 			res.send("Error. Sorry!");
 		}
+	});
+});
+app.post('/api/responses/', function(req, res) {
+	debugger;
+	if (req.isUnauthenticated())
+		res.send("Not authenticated!");
+	api.post('responses', {
+		document_id: req.body.document_id,
+		content: req.body.response_content,
+		user_id: req.session.passport.user.db_id,
+		response_type: req.body.response_type
+	}, function(data) {
+		if (data)
+			res.redirect("/paper/" + req.query.document_id + "/discussion#response" + data.insertId);
 	});
 });
 
