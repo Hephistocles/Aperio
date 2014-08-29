@@ -41,19 +41,11 @@ block paper_content
 					a(data-wysihtml5-command="bold") 
 						i(class="fa fa-bold fa-2x fa-border") 
 					a(data-wysihtml5-command="italic") 
-						i(class="fa fa-italic fa-2x fa-border") 
-					a(data-wysihtml5-command="insertImage") 
-						i(class="fa fa-image fa-2x fa-border") 
+						i(class="fa fa-italic fa-2x fa-border")
 					a(data-wysihtml5-command="insertOrderedList") 
 						i(class="fa fa-list-ol fa-2x fa-border") 
 					a(data-wysihtml5-command="insertUnorderedList") 
-						i(class="fa fa-list-ul fa-2x fa-border") 
-					a(data-wysihtml5-command="justifyCenter") 
-						i(class="fa fa-align-justify fa-2x fa-border") 
-					a(data-wysihtml5-command="justifyLeft") 
-						i(class="fa fa-align-left fa-2x fa-border") 
-					a(data-wysihtml5-command="justifyRight")  
-						i(class="fa fa-align-right fa-2x fa-border") 
+						i(class="fa fa-list-ul fa-2x fa-border")
 					a(data-wysihtml5-command="createLink") 
 						i(class="fa fa-link fa-2x fa-border")
 					div(data-wysihtml5-dialog="createLink",style="display: none;")
@@ -74,7 +66,7 @@ block paper_content
 				textarea(name="response_content" id="response-textarea", placeholder="Enter your text ...",autofocus,style="min-height:150px;padding:10px;font-size:1.2em;border:2px solid #eeeeee;margin-top:-1px;outline:none;")
 				div(style="text-align:right")
 					a Save Draft
-					a(style="margin-left:0 10px;") Clear Draft
+					a(style="margin:0 10px;") Clear Draft
 					input(type="hidden", name="document_id", value=paper.document_id)
 					input(type="submit", value="Submit Response", style="margin:5px;width:150px")
 		script.
