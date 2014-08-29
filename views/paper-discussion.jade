@@ -15,6 +15,12 @@ block paper_content
 				.response-header(style="padding-left:80px")
 					span(style="font-size:0.9em;font-weight:300;text-transform:uppercase;color:#333") #{response.niceTime}
 					h2 #{response["real_name"]}
+				div(style="position:absolute;top:10px;right:180px;")
+					a(onclick="vote(" +  response.response_id + ", -1)")
+						i(class="fa fa-thumbs-down fa-2x")
+				div(style="position:absolute;top:10px;right:122px;")
+					a(onclick="vote(" +  response.response_id + ", 1)")
+						i(class="fa fa-thumbs-up fa-2x")
 				button.pill(type="button" class="showhide-btn", style="background-color:#4791FF;position:absolute;top:10px;right:10px;width:100px") Show More
 				div(style="padding-left:80px;height:0; overflow:hidden;")
 					.response-content
