@@ -78,32 +78,43 @@ app.get('/paper/:id/discussion', function(req, res) {
 	});
 });
 app.get('/paper/:id/discussion2', function(req, res) {
-	api.dosql("SELECT * FROM responses JOIN users ON user_id=users.id JOIN documents ON document_id=documents.id WHERE document_id=?", [req.params.id], function(responses) {
+	api.dosql("SELECT " + 
+    "content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title" +
+	"FROM" +
+		"responses" + 
+	"JOIN" + 
+		"users ON user_id = users.id" + 
+	"JOIN" + 
+		"documents ON document_id = documents.id" + 
+	"JOIN" + 
+		"user_ratings ON users.id = user_ratings.user_id" + 
+	"WHERE" + 
+		"document_id = ?", [req.params.id], function(responses) {
 
-		var itemsToFind = responses.length;
+			var itemsToFind = responses.length;
 
-		function attachComments(response) {
-			return function(comments) {
-				response.comments = comments;
-				for (var i = response.comments.length - 1; i >= 0; i--) {
-					response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
-				}
+			function attachComments(response) {
+				return function(comments) {
+					response.comments = comments;
+					for (var i = response.comments.length - 1; i >= 0; i--) {
+						response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
+					}
 
-				itemsToFind--;
-				if (itemsToFind < 1) {
-					res.render("paper-discussion.jade", {
-						"paper": responses[0],
-						"responses": responses
-					});
-				}
-			};
-		}
-		for (var i = responses.length - 1; i >= 0; i--) {
+					itemsToFind--;
+					if (itemsToFind < 1) {
+						res.render("paper-discussion.jade", {
+							"paper": responses[0],
+							"responses": responses
+						});
+					}
+				};
+			}
+			for (var i = responses.length - 1; i >= 0; i--) {
 
-			api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].id],
-				attachComments(responses[i]));
-		}
-	});
+				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].id],
+					attachComments(responses[i]));
+			}
+		});
 });
 
 app.get('/paper/:id', function(req, res) {
