@@ -1,7 +1,14 @@
-extends ./layout.jade
+extends ./layout
 block content
-	if user
-		p Displaying person #{user.name} who is #{user.age} years old
-	else
-		p
-			em person not found
+	.shadow
+		h1 #{user.real_name} (#{user.user_name})
+		h3 Publications
+		each paper in publications
+			p #{paper.title} (
+				a(href=paper.location) View
+				| |
+				a(href="/paper/"+paper.id) Summary
+				| |
+				a(href="/paper/"+paper.id+"/discussion") Discussion
+				| )
+	

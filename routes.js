@@ -12,24 +12,57 @@ app.use(bodyParser.json());
 
 // serve an html page on the root url
 // we have registered a default views directory (/views) and renderer (ejs) so only "chat.html" is necessary
+
+/* APPLICATION ROUTES */
+
 app.get('/', function(req, res) {
-	res.render("index.jade");
+	res.render("home.jade");
 });
 
 app.get('/paper/:id/discussion', function(req, res) {
-	res.render("paper-discussion.jade");
+	queryAPI("documents", {"id": req.params.id}, function (data) {
+		queryAPI("responses", {"document_id": req.params.id}, function(data2) {
+			/*console.log(data2.length);
+			for (i=0; i<data2.length; i++) {
+				var thisResponse = data2[i];
+
+				queryAPI("comments", {"response_id": data2[i].id}, function(data3){
+					thisResponse.comments = data3;
+				});
+
+				// data2[i].comments = comments;
+			}*/
+			res.render("paper-discussion.jade", {"paper": data[0], "responses": data2});
+		});
+		
+	});
 });
 
-
-app.get('/paper', function(req, res) {
-	res.render("paper.jade");
-});
 app.get('/paper/:id', function(req, res) {
-	res.render("paper.jade");
+	queryAPI("documents", {"id": req.params.id}, function (data) {
+		if (data === null) {
+			res.send("error");
+		} else {
+			res.render("paper-summary.jade", {"paper": data[0]});
+		}
+	});
 });
 
-app.get('/user', function(req, res) {
-	res.render("user.jade", user);
+app.get('/user/:id', function(req, res) {
+	queryAPI("users", {"id": req.params.id}, function (data) {
+		if (data === null) {
+			res.send("error");
+		} else {
+			queryAPI("documents", {"user_id": req.params.id}, function(data2) {
+				res.render("user.jade", {"user": data[0], "publications": data2});
+			});
+		}
+	});
+
+});
+
+app.get('/add', function(req, res) {
+	res.render("add.jade");
 });
 
 /* API ROUTES */

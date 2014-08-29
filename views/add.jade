@@ -1,0 +1,14 @@
+extend ./layout
+block content
+	.shadow
+		h1 Add
+		form
+			h4 Title
+			input(type="text", name="title", placeholder="Title")
+			h4 Location
+			input(type="text", name="location", placeholder="Link to pdf")
+			h4 Abstract
+			textarea(name="abstract")
+			br
+			input(type="submit", value="Publish")
+			
