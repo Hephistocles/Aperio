@@ -7,33 +7,33 @@ block navigation
 		button.pill(style="width:200px;border-radius:4px 0 0 4px;", class="", onclick="window.location.replace('/paper/"+paper.document_id+"')") Summary
 		button.pill(style="width:200px;border-radius:0 4px 4px 0;", class="active", onclick="window.location.replace('/paper/"+paper.document_id+"/discussion')") Discussion
 block paper_content
+	if logged_in
+		form(action="/api/responses/", method="post")
+			.shadow
 
-	form(action="/api/responses/", method="post")
-		.shadow
-
-			div(id="wysihtml5-toolbar", style="display: none;")
-				a(data-wysihtml5-command="bold") bold
-				a(data-wysihtml5-command="italic") italic
-				a(data-wysihtml5-command="insertImage") insertImage
-				a(data-wysihtml5-command="insertOrderedList") insertOrderedList
-				a(data-wysihtml5-command="insertUnorderedList") insertUnorderedList
-				a(data-wysihtml5-command="justifyCenter") justifyCenter
-				a(data-wysihtml5-command="justifyLeft") justifyLeft
-				a(data-wysihtml5-command="justifyRight") justifyRight
-				a(data-wysihtml5-command="createLink") insert link
-				div(data-wysihtml5-dialog="createLink",style="display: none;")
-					label Link:
-						input(data-wysihtml5-dialog-field="href",value="http://",class="text")
-					a(data-wysihtml5-dialog-action="save") OK
-					a(data-wysihtml5-dialog-action="cancel") Cancel
-			textarea(name="response_content" id="response-textarea", placeholder="Enter your text ...",autofocus,style="min-height:150px")
-			a Save Draft
-			a Clear Draft
-			input(type="hidden", name="response_type", value=3)
-			input(type="hidden", name="document_id", value=paper.document_id)
-			input(type="submit", value="Submit Response")
-	script.
-		var editor = new wysihtml5.Editor("response-textarea",{toolbar:"wysihtml5-toolbar",parserRules:wysihtml5ParserRules});
+				div(id="wysihtml5-toolbar", style="display: none;")
+					a(data-wysihtml5-command="bold") bold
+					a(data-wysihtml5-command="italic") italic
+					a(data-wysihtml5-command="insertImage") insertImage
+					a(data-wysihtml5-command="insertOrderedList") insertOrderedList
+					a(data-wysihtml5-command="insertUnorderedList") insertUnorderedList
+					a(data-wysihtml5-command="justifyCenter") justifyCenter
+					a(data-wysihtml5-command="justifyLeft") justifyLeft
+					a(data-wysihtml5-command="justifyRight") justifyRight
+					a(data-wysihtml5-command="createLink") insert link
+					div(data-wysihtml5-dialog="createLink",style="display: none;")
+						label Link:
+							input(data-wysihtml5-dialog-field="href",value="http://",class="text")
+						a(data-wysihtml5-dialog-action="save") OK
+						a(data-wysihtml5-dialog-action="cancel") Cancel
+				textarea(name="response_content" id="response-textarea", placeholder="Enter your text ...",autofocus,style="min-height:150px")
+				a Save Draft
+				a Clear Draft
+				input(type="hidden", name="response_type", value=3)
+				input(type="hidden", name="document_id", value=paper.document_id)
+				input(type="submit", value="Submit Response")
+		script.
+			var editor = new wysihtml5.Editor("response-textarea",{toolbar:"wysihtml5-toolbar",parserRules:wysihtml5ParserRules});
 
 	if responses
 		each response in responses

@@ -37,7 +37,9 @@ app.get('/', function(req, res) {
 
 app.get('/paper/:id/discussion', function(req, res) {
 	api.dosql("SELECT " +
-		"documents.id AS document_id, content, responses.rating AS response_rating, time_stamp, real_name, picture_url, user_ratings.rating AS user_rating, location, title, responses.id AS response_id " +
+		// users.picture_url AS picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id FROM responses JOIN users ON user_id = users.id JOIN documents ON document_id = documents.id JOIN user_ratings ON users.id = user_ratings.user_id WHERE document_id = 1
+		"documents.id as document_id, content, responses.rating AS response_rating, time_stamp, users.real_name AS real_name," +
+		" users.picture_url AS picture_url, user_ratings.rating AS user_rating, location, title, u.real_name AS author_name, responses.id AS response_id " +
 		"FROM " +
 		"responses " +
 		"JOIN " +
@@ -46,6 +48,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 		"documents ON document_id = documents.id " +
 		"JOIN " +
 		"user_ratings ON users.id = user_ratings.user_id " +
+		"JOIN users AS u ON documents.user_id=u.id " +
 		"WHERE " +
 		"document_id = ?", [req.params.id], function(responses) {
 
@@ -57,12 +60,12 @@ app.get('/paper/:id/discussion', function(req, res) {
 					for (var i = response.comments.length - 1; i >= 0; i--) {
 						response.comments[i].niceTime = moment(response.comments[i].time_stamp).fromNow();
 					}
-
 					itemsToFind--;
 					if (itemsToFind < 1) {
 						res.render("paper-discussion.jade", {
 							"paper": responses[0],
 							"responses": responses,
+							"logged_in": req.isAuthenticated(),
 							"url_int": req.url.search(/discussion$/)
 						});
 					}
@@ -163,7 +166,6 @@ app.get(/\/api\/(documents|users|comments|responses|response_types)\//, function
 	});
 });
 app.post('/api/responses/', function(req, res) {
-	debugger;
 	if (req.isUnauthenticated())
 		res.send("Not authenticated!");
 	api.post('responses', {
