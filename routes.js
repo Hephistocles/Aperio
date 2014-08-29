@@ -69,7 +69,7 @@ app.get('/paper/:id/discussion', function(req, res) {
 				};
 			}
 			for (var i = responses.length - 1; i >= 0; i--) {
-
+				responses[i].niceTime = moment(responses[i].time_stamp).format("MMMM Do YYYY");
 				api.dosql("SELECT * FROM comments JOIN users ON author_id=users.id WHERE response_id=?", [responses[i].response_id],
 					attachComments(responses[i]));
 			}

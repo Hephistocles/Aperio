@@ -1,6 +1,9 @@
 extends ./paper
 block navigation
-	div(style="width:400px;margin:auto;margin-top:42px;")
+	div(style="width:400px;margin:auto;margin-top:42px;text-align:center;")
+		img(src=user.picture_url, style="height:60px;width:auto;border-radius:50%;border:5px solid #FFF;display:inline;vertical-align:bottom;")
+		h1(style="display:inline;")  #{paper.title}
+	div(style="width:400px;margin:auto;margin-top:15px;")
 		button.pill(style="width:200px;border-radius:4px 0 0 4px;", class="", onclick="window.location.replace('/paper/"+paper.document_id+"')") Summary
 		button.pill(style="width:200px;border-radius:0 4px 4px 0;", class="active", onclick="window.location.replace('/paper/"+paper.document_id+"/discussion')") Discussion
 block paper_content
@@ -36,19 +39,18 @@ block paper_content
 		each response in responses
 			.response.shadow(style="position:relative;min-height:100px; margin-top:35px;")
 				.side
-					img(src=response.picture_url, style="height:120px;width:auto;border-radius:50%;border:5px solid #FFF;position: absolute;top: -35px;left: 0px;", class="icon-btn")
-					img(src="/img/arrow.png", style="-webkit-transform: rotate(270deg);", class="icon-btn")
-					img(src="/img/arrow.png", style="-webkit-transform: rotate(90deg);", class="icon-btn")
+					img(src="response.picture_url", style="height:120px;width:auto;border-radius:50%;border:5px solid #FFF;position: absolute;top: -35px;left: 0px;", class="icon-btn")
 				.response-header(style="padding-left:80px")
+					span(style="font-size:0.9em;font-weight:300;text-transform:uppercase;color:#333") #{response.niceTime}
 					h2 #{response["real_name"]}
 				button(type="button" class="showhide-btn", style="position:absolute;top:10px;right:10px;") Show
 				div(style="padding-left:80px;display:none;")
 					.response-content
 						p!= response.content
 						.comments
+							hr
 							if response.comments.length>0
 								each comment in response.comments
-									h3 Comments
 									.comment
 										span
 											b #{comment["real_name"]} 
